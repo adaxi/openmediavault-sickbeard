@@ -32,12 +32,17 @@ OMV.WorkspaceManager.registerNode({
 * @derived OMV.workspace.form.Panel
 */
 Ext.define("OMV.module.admin.service.sickbeard.View", {
-    extend: "Ext.panel.Panel",
-    initComponent: function() {
-            var me = this;
-            window.open("http://localhost:8081/sickbeard","blank");
-            me.callParent(Ext.panel.panel);
-    },
+	extend: "OMV.workspace.form.Panel",
+
+	getFormItems: function() {
+		return [{
+			xtype: "component",
+			autoEl:  {
+				tag: "iframe",
+				src: "http://localhost:8081/sickbeard"
+			}
+		}];
+	}
 });
 
 
