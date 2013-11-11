@@ -51,7 +51,7 @@ Ext.define("OMV.module.admin.service.sickbeard.Settings", {
 				fieldLabel: _("Enable"),
 				checked: false
 			},{
-				html: '<a href="' + window.location.hostname + '":8081/sickbeard">Open sickbeard</a>', 
+				html: '<a href="//' + window.location.hostname + '/sickbeard/">Open sickbeard</a>', 
 				border: false				
 			}]
 		}];
