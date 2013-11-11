@@ -1,0 +1,14 @@
+Source: openmediavault-sickbeard
+Section: net
+Priority: optional
+Maintainer: Gerik Bonaert <dev@adaxisoft.be>
+Build-Depends: debhelper (>> 7), gettext
+Standards-Version: 3.6.10
+Homepage: http://adaxisoft.be
+
+Package: openmediavault-sickbeard
+Architecture: all
+Depends: openmediavault (>= 0.5.7) 
+Priority: optional
+Description: OpenMediaVault Sickbeard plugin
+ Sickbeard is a PVR for Unix.

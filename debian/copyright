@@ -1,0 +1,11 @@
+Format: http://dep.debian.net/deps/dep5
+Upstream-Contact: Gerik Bonaert <dev@adaxisoft.be>
+Source: http://adaxisoft.be
+
+Files: *
+Copyright: 2013 Gerik Bonaert <dev@adaxisoft.be>
+License: GPL-2
+
+Files: var/www/openmediavault/images/sickbeard.png
+Copyright: Midgetspy <http://sickbeard.com/>
+License: GPL-3
