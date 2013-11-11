@@ -28,34 +28,6 @@ OMV.WorkspaceManager.registerNode({
 });
 
 /**
-* @class OMV.module.admin.privilege.sickbeard.View
-* @derived OMV.workspace.form.Panel
-*/
-Ext.define("OMV.module.admin.service.sickbeard.View", {
-	extend: "OMV.workspace.form.Panel",
-
-	getFormItems: function() {
-		return [{
-			xtype: "component",
-			autoEl:  {
-				tag: "iframe",
-				src: "http://localhost:8081/sickbeard"
-			}
-		}];
-	}
-});
-
-
-OMV.WorkspaceManager.registerPanel({
-	id: "view",
-	path: "/service/sickbeard",
-	text: _("View"),
-	position: 5,
-	className: "OMV.module.admin.service.sickbeard.View"
-});
-
-
-/**
 * @class OMV.module.admin.privilege.sickbeard.Settings
 * @derived OMV.workspace.form.Panel
 */
@@ -78,6 +50,9 @@ Ext.define("OMV.module.admin.service.sickbeard.Settings", {
 				name: "enable",
 				fieldLabel: _("Enable"),
 				checked: false
+			},{
+				  xtype: 'box',
+				  autoEl: {tag: 'a', href: 'window.location.replace(window.location + ":8081/sickbeard");', html: 'Open sickbeard'}
 			}]
 		}];
 	}
