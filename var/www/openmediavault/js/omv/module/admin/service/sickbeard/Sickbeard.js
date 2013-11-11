@@ -20,7 +20,7 @@
 // require("js/omv/WorkspaceManager.js")
 
 OMV.WorkspaceManager.registerNode({
-	id: "addns",
+	id: "sickbeard",
 	path: "/service",
 	text: _("Sickbeard"),
 	icon16: "images/sickbeard.png",
