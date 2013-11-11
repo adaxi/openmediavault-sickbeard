@@ -52,7 +52,7 @@ Ext.define("OMV.module.admin.service.sickbeard.Settings", {
 				checked: false
 			},{
 				  xtype: 'box',
-				  autoEl: {tag: 'a', href: 'javascript:window.location.replace(window.location.hostname + \':8081/sickbeard\');', html: 'Open sickbeard'}
+				  autoEl: {tag: 'a', href: 'javascript:window.location = window.location.hostname + \':8081/sickbeard\';', html: 'Open sickbeard'}
 			}]
 		}];
 	}
