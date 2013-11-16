@@ -196,7 +196,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$this->validateMethodParams($params, '{
 			  "type":"object",
 			  "properties":{
-				  "name":{ "type":"string"}
+				  "name": { "type":"string" }
 			  }
 		  }');
 		
@@ -242,7 +242,6 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$this->validateMethodParams($params, '{
 			  "type":"object",
 			  "properties":{
-				  "uuid":{'.$GLOBALS['OMV_JSONSCHEMA_UUID_UNDEFINED'].'},
 				  "enable":{"type":"boolean"},
 				  "name":{"type":"string"},
 				  "url":{"type":"string"},
