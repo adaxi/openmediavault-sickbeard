@@ -159,7 +159,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		  }');
 		// Get the configuration objects.
 		$sickbeardIni = new ConfigObj("/etc/sickbeard/config.ini");
-		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data');
+		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data', '');
 		
 		$objects = array();
 		$newznabs = explode("!!!", $newznab_data);
