@@ -198,7 +198,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$this->validateMethodParams($params, '{
 			  "type":"object",
 			  "properties":{
-				  "name": { "type":"string" }
+				  "uuid": { "type":"string" }
 			  }
 		  }');
 		
@@ -209,15 +209,17 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
-			$newznab = split("|", $newznab);
-			$object = array(
-					'name' => $newznab[0],
-					'url' => $newznab[1],
-					'hash' => $newznab[2],
-					'enable' => boolval($newznab[3]),
-			);
-			if ($object['name'] === $param['name']) {
-				return $object;
+			if (!empty($newznab)) {
+				$newznab = split("|", $newznab);
+				$object = array(
+						'name' => $newznab[0],
+						'url' => $newznab[1],
+						'hash' => $newznab[2],
+						'enable' => boolval($newznab[3]),
+				);
+				if ($object['name'] === $param['name']) {
+					return $object;
+				}
 			}
 		}
 		
