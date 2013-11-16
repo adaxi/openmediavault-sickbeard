@@ -25,7 +25,73 @@ set -e
 . /etc/default/openmediavault
 . /usr/share/openmediavault/scripts/helper-functions
 
+OMV_SICKBEARD_RUN_AS=${OMV_SICKBEARD_RUN_AS:-"essencia"}
+OMV_SICKBEARD_PORT=${OMV_SICKBEARD_PORT:-"8081"}
+OMV_SICKBEARD_INSTALL_DIR=${OMV_SICKBEARD_INSTALL_DIR:-"/usr/share/sickbeard"}
+OMV_SICKBEARD_CONFIG_DIR=${OMV_SICKBEARD_CONFIG_DIR:-"/etc/sickbeard"}
+OMV_SICKBEARD_CONFIG_FILE=${OMV_SICKBEARD_CONFIG_DIR:-"${OMV_SICKBEARD_CONFIG_DIR}/config.ini"}
+OMV_SICKBEARD_DATA_DIR=${OMV_SICKBEARD_DATA_DIR:-"/var/lib/sickbeard"}
+OMV_SICKBEARD_LOG_DIR=${OMV_SICKBEARD_LOG_DIR:-"/var/log/sickbeard"}
+OMV_SICKBEARD_DEFAULT_FILE=${OMV_SICKBEARD_DEFAULT_FILE:-"/etc/default/sickbeard"}
+OMV_SICKBEARD_WEB_ROOT=${OMV_SICKBEARD_WEB_ROOT:-"/sickbeard"}
+OMV_SICKBEARD_AUTOPROCESS_FILE=${OMV_SICKBEARD_AUTOPROCESS_FILE:-"/usr/share/sickbeard/autoProcessTV/autoProcessTV.cfg"}
 
+for file in ${OMV_SICKBEARD_INSTALL_DIR} ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
+	mkdir -p $file;
+done
 
+chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_LOG_DIR} 
 
+cat <<EOF > ${OMV_SICKBEARD_DEFAULT_FILE}
+# This file is sourced by /etc/init.d/sickbeard
+#
+# When sickbeard is started using the init script
+# is started under the account of $USER, as set below.
+#
+# Each setting is marked either "required" or "optional";
+# leaving any required setting unconfigured will cause
+# the service to not start.
 
+# [required] set path where sickbeard is installed:
+APP_PATH=${OMV_SICKBEARD_INSTALL_DIR}
+
+# [optional] change to 1 to enable daemon
+ENABLE_DAEMON=1
+
+# [required] user or uid of account to run the program as:
+RUN_AS=${OMV_SICKBEARD_RUN_AS}
+
+# [optional] change to 1 to enable updating from webinterface
+# this changes ownership of /opt/sickbeard to user set @ RUN_AS=
+WEB_UPDATE=1
+
+# [optional] full path to the configuration file of your choice;
+# otherwise, the default location (~/.sickbeard) is used:
+CONFIG=${OMV_SICKBEARD_CONFIG_FILE}
+
+# [optional] full path to the folder to store data (databases/thumbs) in;
+# otherwise, the default location (~/.sickbeard) is used:
+DATADIR=${OMV_SICKBEARD_DATA_DIR}
+
+# [optional] port number to listen on:
+PORT=${OMV_SICKBEARD_PORT}
+
+# [optional] full path for the pidfile
+# otherwise, the default location /var/run/sickbeard/sickbeard.pid is used:
+PID_FILE=
+EOF
+  
+chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_DIR} -R
+
+###
+# autoProcessTV.cfg
+###
+cat <<EOF > ${OMV_SICKBEARD_AUTOPROCESS_FILE}
+[SickBeard]
+host=localhost
+port=${OMV_SICKBEARD_PORT}
+username=
+password=
+web_root=${OMV_SICKBEARD_WEB_ROOT}
+ssl=0
+EOF
