@@ -173,7 +173,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 
 	onAddButton: function() {
 		var me = this;
-		Ext.create("OMV.module.admin.service.sickbeard.NewznabProviders", {
+		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
 			title: _("Add job"),
 			name: "",
 			listeners: {
@@ -188,8 +188,8 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 	onEditButton: function() {
 		var me = this;
 		var record = me.getSelected();
-		Ext.create("OMV.module.admin.service.sickbeard.NewznabProviders", {
-			title: _("Edit job"),
+		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
+			title: _("Edit provider"),
 			name: record.get("name"),
 			listeners: {
 				scope: me,
