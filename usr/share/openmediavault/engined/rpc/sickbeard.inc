@@ -70,7 +70,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 
 		return array(
 			"enable" => boolval($object['enable']),
-			"api_key" => $sickbeardIni->get('General', 'api_key'),
+			"api_key" => $sickbeardIni->get('General', 'api_key',""),
 		);
 	}
 

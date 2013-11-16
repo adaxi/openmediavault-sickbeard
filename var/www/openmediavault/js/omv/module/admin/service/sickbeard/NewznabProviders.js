@@ -134,6 +134,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 				model: OMV.data.Model.createImplicit({
 					idProperty: "name",
 					fields: [
+						//{ name: "uuid", type: "string" },
 						{ name: "name", type: "string" },
 						{ name: "enable", type: "boolean" },
 						{ name: "hash", type: "string" },
@@ -175,7 +176,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		var me = this;
 		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
 			title: _("Add job"),
-			name: "",
+			uuid: "",
 			listeners: {
 				scope: me,
 				submit: function() {
@@ -190,7 +191,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		var record = me.getSelected();
 		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
 			title: _("Edit provider"),
-			name: record.get("name"),
+			uuid: record.get("name"),
 			listeners: {
 				scope: me,
 				submit: function() {
