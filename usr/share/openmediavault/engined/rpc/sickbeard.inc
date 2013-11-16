@@ -164,13 +164,15 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$objects = array();
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
-			$newznab = split("|", $newznab);
-			$objects[] = array(
-				'name' => $newznab[0],
-				'url' => $newznab[1],
-				'hash' => $newznab[2],
-				'enable' => boolval($newznab[3]),
-			);
+			if (!empty($newznab)) {
+				$newznab = split("|", $newznab);
+				$objects[] = array(
+					'name' => $newznab[0],
+					'url' => $newznab[1],
+					'hash' => $newznab[2],
+					'enable' => boolval($newznab[3]),
+				);
+			}
 		}
 		
 		// Filter result.
