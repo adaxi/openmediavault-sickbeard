@@ -65,13 +65,11 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProvider", {
 			name: "name",
 			fieldLabel: _("Name"),
 			allowBlank: true,
-			vtype: "name"
 		},{
 			xtype: "textfield",
 			name: "hash",
 			fieldLabel: _("Hash"),
 			allowBlank: true,
-			vtype: "hash"
 		},{
 			xtype: "textfield",
 			name: "url",
@@ -152,26 +150,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		});
 		me.callParent(arguments);
 	},
-/*
-	getTopToolbarItems: function() {
-		var me = this;
-		var items = me.callParent(arguments);
-		return items;
-	},
 
-	onSelectionChange: function(model, records) {
-		var me = this;
-		me.callParent(arguments);
-		// Process additional buttons.
-		var tbarRunCtrl = me.queryById(me.getId() + "-run");
-		if(records.length <= 0)
-			tbarRunCtrl.disable();
-		else if(records.length == 1)
-			tbarRunCtrl.enable();
-		else
-			tbarRunCtrl.disable();
-	},
-*/
 	onAddButton: function() {
 		var me = this;
 		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
@@ -191,7 +170,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		var record = me.getSelected();
 		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
 			title: _("Edit provider"),
-			uuid: record.get("name"),
+			uuid: record.get("uuid"),
 			listeners: {
 				scope: me,
 				submit: function() {
