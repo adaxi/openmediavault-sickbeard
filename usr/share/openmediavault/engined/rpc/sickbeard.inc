@@ -167,6 +167,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			if (!empty($newznab)) {
 				$newznab = split("|", $newznab);
 				$objects[] = array(
+					'uuid' => $newznab[0],
 					'name' => $newznab[0],
 					'url' => $newznab[1],
 					'hash' => $newznab[2],
@@ -212,6 +213,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			if (!empty($newznab)) {
 				$newznab = split("|", $newznab);
 				$object = array(
+						'uuid' => $newznab[0],
 						'name' => $newznab[0],
 						'url' => $newznab[1],
 						'hash' => $newznab[2],
@@ -227,7 +229,8 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			'enable' => false,
 			'url' => '',
 			'hash' => '',
-			'name' => ''
+			'name' => '',
+			'uuid' => ''
 		);
 		
 	}
@@ -339,7 +342,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$this->validateMethodParams($params, '{
 			  "type":"object",
 			  "properties":{
-				  "name":{'.$GLOBALS['OMV_JSONSCHEMA_UUID'].'}
+				  "name":{ "type" : "string"}
 			  }
 		  }');
 		
