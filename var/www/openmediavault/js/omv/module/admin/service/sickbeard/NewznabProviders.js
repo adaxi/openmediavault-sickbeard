@@ -132,9 +132,9 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 			store: Ext.create("OMV.data.Store", {
 				autoLoad: true,
 				model: OMV.data.Model.createImplicit({
-					idProperty: "name",
+					idProperty: "uuid",
 					fields: [
-						//{ name: "uuid", type: "string" },
+						{ name: "uuid", type: "string" },
 						{ name: "name", type: "string" },
 						{ name: "enable", type: "boolean" },
 						{ name: "hash", type: "string" },
@@ -152,7 +152,7 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		});
 		me.callParent(arguments);
 	},
-
+/*
 	getTopToolbarItems: function() {
 		var me = this;
 		var items = me.callParent(arguments);
@@ -171,11 +171,11 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 		else
 			tbarRunCtrl.disable();
 	},
-
+*/
 	onAddButton: function() {
 		var me = this;
 		Ext.create("OMV.module.admin.service.sickbeard.NewznabProvider", {
-			title: _("Add job"),
+			title: _("Add provider"),
 			uuid: "",
 			listeners: {
 				scope: me,
