@@ -93,7 +93,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			  "type":"object",
 			  "properties":{
 				  "enable":{"type":"boolean"},
-				  "api_key":{"type":"string"},
+				  "api_key":{"type":"string"}
 			  }
 		  }');
 		// Get the existing configuration object.
