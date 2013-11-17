@@ -25,9 +25,11 @@ set -e
 case "$1" in
 	configure)
 		########################################################################
-		# Set the default settings of the addns package to those expected by
+		# Set the default settings of the sickbeard package to those expected by
 		# OpenMediaVault.
 		########################################################################
+
+		mkdir -p /etc/sickbeard
 
 		########################################################################
 		# Update the configuration.
