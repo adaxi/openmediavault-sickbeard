@@ -376,7 +376,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		// Rebuild the ini string
 		$newznabs = array();
 		foreach ($objects as $object) {
-			$newznab = sprintf("%s|%s|%s|%s",
+			$newznabs[] = sprintf("%s|%s|%s|%s",
 					$object['name'],
 					$object['url'],
 					$object['hash'],
