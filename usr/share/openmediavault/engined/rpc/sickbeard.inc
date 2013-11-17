@@ -218,7 +218,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 						'hash' => $newznab[2],
 						'enable' => boolval($newznab[3]),
 				);
-				if ($object['name'] === $param['uuid'] || $object['name'] === $param['name']) {
+				if ($object['uuid'] === $params['uuid']) {
 					return $object;
 				}
 			}
