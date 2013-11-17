@@ -50,15 +50,6 @@ Ext.define("OMV.module.admin.service.sickbeard.Settings", {
 				name: "enable",
 				fieldLabel: _("Enable"),
 				checked: false
-			},{
-				xtype: "textfield",
-				name: "api_key",
-				fieldLabel: _("API Key"),
-				allowBlank: false,
-				plugins: [{
-					ptype: "fieldinfo",
-					text: _("Specifies the API key needed to connect to Sickbeard")
-				}]
 			}]
 		}];
 	}

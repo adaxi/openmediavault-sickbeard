@@ -197,10 +197,10 @@ Ext.define("OMV.module.admin.service.sickbeard.NewznabProviders", {
 
 });
 
-OMV.WorkspaceManager.registerPanel({
-	id: "newznab_providers",
-	path: "/service/sickbeard",
-	text: _("Newsnab Providers"),
-	position: 20,
-	className: "OMV.module.admin.service.sickbeard.NewznabProviders"
-});
+//OMV.WorkspaceManager.registerPanel({
+//	id: "newznab_providers",
+//	path: "/service/sickbeard",
+//	text: _("Newsnab Providers"),
+//	position: 20,
+//	className: "OMV.module.admin.service.sickbeard.NewznabProviders"
+//});

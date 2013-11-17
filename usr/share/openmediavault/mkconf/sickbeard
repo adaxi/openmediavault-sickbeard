@@ -95,3 +95,5 @@ password=
 web_root=${OMV_SICKBEARD_WEB_ROOT}
 ssl=0
 EOF
+
+chown essencia /etc/sickbeard/config.ini
