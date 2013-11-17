@@ -250,6 +250,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$this->validateMethodParams($params, '{
 			  "type":"object",
 			  "properties":{
+				  "uuid":{"type":"string"},
 				  "enable":{"type":"boolean"},
 				  "name":{"type":"string"},
 				  "url":{"type":"string"},
