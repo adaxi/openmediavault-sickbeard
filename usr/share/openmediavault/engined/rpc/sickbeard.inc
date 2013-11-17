@@ -261,7 +261,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		
 		// Get the configuration objects.
 		$sickbeardIni = new ConfigObj("/etc/sickbeard/config.ini");
-		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data');
+		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data','');
 		
 		// Retrieve the object to be updated
 		$objects = array();
@@ -269,22 +269,24 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$notify = OMV_NOTIFY_CREATE;
 		$newznabs = explode("!!!", $newznab_data);		
 		foreach ($newznabs as $newznab) {
-			$newznab = split("|", $newznab);
-			if ($newznab[0] === $params['name']) {
-				$object = array(
-					'name' => $newznab[0],
-					'url' => $newznab[1],
-					'hash' => $newznab[2],
-					'enable' => boolval($newznab[3]),
-				);
-				$notify = OMV_NOTIFY_MODIFY;
-			} else {
-				$objects[] = array(
-					'name' => $newznab[0],
-					'url' => $newznab[1],
-					'hash' => $newznab[2],
-					'enable' => boolval($newznab[3]),
-				);
+			if (!empty($newznab)) {
+				$newznab = split("|", $newznab);
+				if ($newznab[0] === $params['name']) {
+					$object = array(
+						'name' => $newznab[0],
+						'url' => $newznab[1],
+						'hash' => $newznab[2],
+						'enable' => boolval($newznab[3]),
+					);
+					$notify = OMV_NOTIFY_MODIFY;
+				} else {
+					$objects[] = array(
+						'name' => $newznab[0],
+						'url' => $newznab[1],
+						'hash' => $newznab[2],
+						'enable' => boolval($newznab[3]),
+					);
+				}
 			}
 		}
 			
