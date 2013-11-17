@@ -205,7 +205,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		
 		// Get the configuration object.
 		$sickbeardIni = new ConfigObj("/etc/sickbeard/config.ini");
-		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data');
+		$newznab_data = $sickbeardIni->get('Newznab', 'newznab_data', '');
 		
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
@@ -223,8 +223,12 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			}
 		}
 		
-		throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,	
-				$param['name']);
+		return array(
+			'enable' => false,
+			'url' => '',
+			'hash' => '',
+			'name' => ''
+		);
 		
 	}
 	
