@@ -175,7 +175,6 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 				);
 			}
 		}
-		print_r($objects);
 		// Filter result.
 		return $this->applyFilter($objects, $params['start'],
 				$params['limit'], $params['sortfield'], $params['sortdir']);
@@ -219,7 +218,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 						'hash' => $newznab[2],
 						'enable' => boolval($newznab[3]),
 				);
-				if ($object['name'] === $param['uuid']) {
+				if ($object['name'] === $param['uuid'] || $object['name'] === $param['name']) {
 					return $object;
 				}
 			}
