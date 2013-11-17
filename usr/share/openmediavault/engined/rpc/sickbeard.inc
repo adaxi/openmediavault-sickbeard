@@ -165,7 +165,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
 			if (!empty($newznab)) {
-				$newznab = split("|", $newznab);
+				$newznab = explode("|", $newznab);
 				$objects[] = array(
 					'uuid' => $newznab[0],
 					'name' => $newznab[0],
@@ -175,7 +175,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 				);
 			}
 		}
-		
+		print_r($objects);
 		// Filter result.
 		return $this->applyFilter($objects, $params['start'],
 				$params['limit'], $params['sortfield'], $params['sortdir']);
@@ -211,7 +211,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
 			if (!empty($newznab)) {
-				$newznab = split("|", $newznab);
+				$newznab = explode("|", $newznab);
 				$object = array(
 						'uuid' => $newznab[0],
 						'name' => $newznab[0],
@@ -273,7 +273,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$newznabs = explode("!!!", $newznab_data);		
 		foreach ($newznabs as $newznab) {
 			if (!empty($newznab)) {
-				$newznab = split("|", $newznab);
+				$newznab = explode("|", $newznab);
 				if ($newznab[0] === $params['name']) {
 					$object = array(
 						'name' => $newznab[0],
@@ -355,7 +355,7 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 		$object = array();
 		$newznabs = explode("!!!", $newznab_data);
 		foreach ($newznabs as $newznab) {
-			$newznab = split("|", $newznab);
+			$newznab = explode("|", $newznab);
 			if ($newznab[0] === $params['name']) {
 				$object = array(
 						'name' => $newznab[0],
