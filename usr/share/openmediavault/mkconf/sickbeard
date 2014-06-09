@@ -17,9 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
 
-# Documentation/Howto:
-# http://wiki.dreamhost.com/index.php/Crontab
-
 set -e
 
 . /etc/default/openmediavault
@@ -35,9 +32,11 @@ OMV_SICKBEARD_LOG_DIR=${OMV_SICKBEARD_LOG_DIR:-"/var/log/sickbeard"}
 OMV_SICKBEARD_DEFAULT_FILE=${OMV_SICKBEARD_DEFAULT_FILE:-"/etc/default/sickbeard"}
 OMV_SICKBEARD_WEB_ROOT=${OMV_SICKBEARD_WEB_ROOT:-"/sickbeard"}
 OMV_SICKBEARD_AUTOPROCESS_FILE=${OMV_SICKBEARD_AUTOPROCESS_FILE:-"/usr/share/sickbeard/autoProcessTV/autoProcessTV.cfg"}
+OMV_SICKBEARD_NGINX_SITE=${OMV_SICKBEARD_NGINX_SITE:-"/etc/nginx/openmediavault-webgui.d/sickbeard-proxy.conf""}
 
-for file in ${OMV_SICKBEARD_INSTALL_DIR} ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
-	mkdir -p $file;
+for DIR in ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
+	mkdir -p $DIR;
+	chown ${OMV_SICKBEARD_RUN_AS} ${DIR} -R
 done
 
 chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_LOG_DIR} 
@@ -92,8 +91,16 @@ host=localhost
 port=${OMV_SICKBEARD_PORT}
 username=
 password=
-web_root=${OMV_SICKBEARD_WEB_ROOT}
+web_root=
 ssl=0
 EOF
 
-chown essencia /etc/sickbeard/config.ini
+chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_FILE}
+
+cat <<EOF > ${OMV_SICKBEARD_NGINX_SITE}
+location /sickbeard/ {
+    proxy_pass http://localhost:8081/;
+}
+EOF
+
+service nginx reload
