@@ -38,11 +38,6 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 	public function initialize() {
 		$this->registerMethod("getSettings");
 		$this->registerMethod("setSettings");
-		/*
-		$this->registerMethod("getNewznabProviderList");
-		$this->registerMethod("getNewznabProvider");
-		$this->registerMethod("setNewznabProvider");
-		$this->registerMethod("deleteNewznabProvider");*/
 	}
 
 	/**
@@ -65,8 +60,6 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
 			  $xpath);
 		}
-
-		$sickbeardIni = new ConfigObj("/etc/sickbeard/config.ini");
 
 		return array(
 			"enable" => boolval($object['enable']),
