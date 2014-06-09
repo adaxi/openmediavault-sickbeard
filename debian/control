@@ -1,4 +1,4 @@
-Source: openmediavault-sickbeard
+Source: openmediavault-sickbeard-essencia
 Section: net
 Priority: optional
 Maintainer: Gerik Bonaert <dev@adaxisoft.be>
@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 7), gettext
 Standards-Version: 3.6.10
 Homepage: http://adaxisoft.be
 
-Package: openmediavault-sickbeard
+Package: openmediavault-sickbeard-essencia
 Architecture: all
 Depends: openmediavault (>= 0.5.7) , sickbeard
 Priority: optional
