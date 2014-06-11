@@ -95,8 +95,6 @@ web_root=
 ssl=0
 EOF
 
-chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_FILE}
-
 cat <<EOF > ${OMV_SICKBEARD_NGINX_SITE}
 location /sickbeard/ {
     proxy_pass http://localhost:8081/;
