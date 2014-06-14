@@ -110,7 +110,7 @@ fi
 ###
 if [ -f ${OMV_SICKBEARD_CONFIG_FILE} ]; then
     sed -i "s:web_root.*:web_root = ${OMV_SICKBEARD_WEB_ROOT}:" ${OMV_SICKBEARD_CONFIG_FILE}
-    chown ${OMV_SICKBEARD_RUN_AS} ${FILE}
+    chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_FILE}
 fi
 
 
