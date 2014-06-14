@@ -35,11 +35,8 @@ OMV_SICKBEARD_AUTOPROCESS_FILE=${OMV_SICKBEARD_AUTOPROCESS_FILE:-"/usr/share/sic
 OMV_SICKBEARD_NGINX_SITE=${OMV_SICKBEARD_NGINX_SITE:-"/etc/nginx/openmediavault-webgui.d/sickbeard-proxy.conf"}
 
 for DIR in ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
-	mkdir -p $DIR;
-	chown ${OMV_SICKBEARD_RUN_AS} ${DIR} -R
+	mkdir -p ${DIR};
 done
-
-chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_LOG_DIR} 
 
 cat <<EOF > ${OMV_SICKBEARD_DEFAULT_FILE}
 # This file is sourced by /etc/init.d/sickbeard
@@ -79,9 +76,11 @@ PORT=${OMV_SICKBEARD_PORT}
 # otherwise, the default location /var/run/sickbeard/sickbeard.pid is used:
 PID_FILE=
 EOF
-  
-chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_DIR} -R
 
+for DIR in ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
+    chown ${OMV_SICKBEARD_RUN_AS} ${DIR} -R
+done
+  
 ###
 # autoProcessTV.cfg
 ###
@@ -91,14 +90,45 @@ host=localhost
 port=${OMV_SICKBEARD_PORT}
 username=
 password=
-web_root=
+web_root=${OMV_SICKBEARD_WEB_ROOT}
 ssl=0
 EOF
 
-cat <<EOF > ${OMV_SICKBEARD_NGINX_SITE}
-location /sickbeard/ {
-    proxy_pass http://localhost:8081/;
+###
+# We need the configuration to exist to change the web_root.
+# In case the configuration does not exist we create it by
+# starting sickbeard and stopping it.
+###
+if [ ! -f ${OMV_SICKBEARD_CONFIG_FILE} ]; then
+    service sickbeard start 
+    sleep 3
+    service sickbeard stop 
+fi
+
+###
+# Alter configuration file to set web_root.
+###
+if [ -f ${OMV_SICKBEARD_CONFIG_FILE} ]; then
+    sed -i "s:web_root.*:web_root = ${OMV_SICKBEARD_WEB_ROOT}:" ${OMV_SICKBEARD_CONFIG_FILE}
+    chown ${OMV_SICKBEARD_RUN_AS} ${FILE}
+fi
+
+
+###
+# Handle nginx proxy for sickbeard
+###
+if [ "$(omv_config_get "//services/sickbeard/enable")" = "1" ]; then
+    
+    cat <<EOF > ${OMV_SICKBEARD_NGINX_SITE}
+location ${OMV_SICKBEARD_WEB_ROOT}/ {
+    proxy_pass http://localhost:${OMV_SICKBEARD_PORT}${OMV_SICKBEARD_WEB_ROOT}/;
 }
 EOF
+
+else
+
+    rm ${OMV_SICKBEARD_NGINX_SITE}
+
+fi
 
 service nginx reload
