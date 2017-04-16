@@ -18,14 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
  */
-require_once("openmediavault/module.inc");
-require_once("openmediavault/config.inc");
-require_once("openmediavault/error.inc");
-require_once("openmediavault/initscript.inc");
-require_once("openmediavault/log.inc");
 
-class OMVModuleSickbeard extends OMVModuleServiceAbstract
-  implements OMVINotifyListener, OMVIModuleServiceStatus {
+class OMVModuleSickbeard extends \OMV\Engine\Module\ServiceAbstract
+  implements \OMV\Engine\Notify\IListener, \OMV\Engine\Module\IServiceStatus {
 	/**
 	 * Get the module name.
 	 */
@@ -35,76 +30,56 @@ class OMVModuleSickbeard extends OMVModuleServiceAbstract
 
 	/**
 	 * Generate the configuration.
-	 * @throw E_EXEC_FAILED
 	 */
 	public function applyConfig() {
-		$cmd = "omv-mkconf sickbeard 2>&1";
-		if(0 !== $this->exec($cmd, $output)) {
-			throw new OMVException(OMVErrorMsg::E_EXEC_FAILED,
-			  $cmd, implode("\n", $output));
-		}
+		$cmd = new \OMV\System\Process("omv-mkconf", "sickbeard");
+		$cmd->setRedirect2to1();
+		$cmd->execute();
 	}
 	
 	/**
 	 * Stop the managed service.
 	 */
 	public function stopService() {
-		$initd = new OMVSysVInitScript("sickbeard", FALSE);
-		$initd->exec();
+		$systemCtl = new \OMV\System\SystemCtl("sickbeard");
+		$systemCtl->disable(TRUE);
 	}
 	
 	/**
 	 * Start the managed service.
-	 * @throw E_CONFIG_GET_OBJECT_FAILED
 	 */
 	public function startService() {
-		global $xmlConfig;
-		$xpath = "//services/sickbeard";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-					$xpath);
-		}
-		if(FALSE === boolval($object['enable']))
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sickbeard");
+		if (TRUE !== $object->get("enable"))
 			return;
-		$initd = new OMVSysVInitScript("sickbeard", TRUE);
-		$initd->exec();
+		$systemCtl = new \OMV\System\SystemCtl("sickbeard");
+		$systemCtl->enable(TRUE);
 	}
 	
 	/**
 	 * Get the status of the managed service.
-	 * @throw E_CONFIG_GET_OBJECT_FAILED
 	 */
 	public function getStatus() {
-		global $xmlConfig;
-		$xpath = "//services/sickbeard";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-					$xpath);
-		}
-		$initd = new OMVSysVInitScript("sickbeard");
-		return array(
-				"name" => $this->getName(),
-				"title" => gettext("Sickbeard"),
-				"enabled" => boolval($object['enable']),
-				"running" => ($initd->status() == 0)
-		);
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sickbeard");
+		$systemCtl = new \OMV\System\SystemCtl("sickbeard");
+		return [
+			"name" => $this->getName(),
+			"title" => gettext("Sickbeard"),
+			"enabled" => $object->get("enable"),
+			"running" => $systemCtl->isActive()
+		];
 	}
 	
 
 	/**
 	 * Bind listeners.
 	 */
-	function bindListeners(OMVNotifyDispatcher $dispatcher) {
+	function bindListeners(\OMV\Engine\Notify\Dispatcher $dispatcher) {
 		$dispatcher->addListener(
 		  OMV_NOTIFY_MODIFY,
-		  "org.openmediavault.services.sickbeard",
-		  array($this, "setDirty"));
+		  "org.openmediavault.conf.service.sickbeard",
+		  [$this, "setDirty"]);
 	}
 }
-
-// Register module.
-$moduleMgr = &OMVModuleMgr::getInstance();
-$moduleMgr->registerModule(new OMVModuleSickbeard());
-?>

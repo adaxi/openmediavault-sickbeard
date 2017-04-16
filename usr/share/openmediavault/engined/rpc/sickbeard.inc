@@ -18,13 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
  */
-require_once("openmediavault/object.inc");
-require_once("openmediavault/config.inc");
-require_once("openmediavault/error.inc");
-require_once("openmediavault/rpcservice.inc");
-require_once("openmediavault/notify.inc");
 
-class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
+class OMVRpcServiceSickbeard extends \OMV\Rpc\ServiceAbstract {
 	/**
 	 * Get the RPC service name.
 	 */
@@ -48,22 +43,14 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 	 * @throw E_CONFIG_GET_OBJECT_FAILED
 	 */
 	function getSettings($params, $context) {
-		global $xmlConfig;
 		// Validate the RPC caller context.
-		$this->validateMethodContext($context, array(
+		$this->validateMethodContext($context, [
 			  "role" => OMV_ROLE_ADMINISTRATOR
-		  ));
+		]);
 		// Get the configuration object.
-		$xpath = "//services/sickbeard";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-			  $xpath);
-		}
-
-		return array(
-			"enable" => boolval($object['enable']),
-		);
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sickbeard");
+		return $object->getAssoc();
 	}
 
 	/**
@@ -75,44 +62,21 @@ class OMVRpcServiceSickbeard extends OMVRpcServiceAbstract {
 	 * @throw E_CONFIG_SET_OBJECT_FAILED
 	 */
 	function setSettings($params, $context) {
-		global $xmlConfig;
 		// Validate the RPC caller context.
-		$this->validateMethodContext($context, array(
+		$this->validateMethodContext($context, [
 			  "role" => OMV_ROLE_ADMINISTRATOR
-		  ));
+		]);
 		// Validate the parameters of the RPC service method.
-		$this->validateMethodParams($params, '{
-			  "type":"object",
-			  "properties":{
-				  "enable":{"type":"boolean"}
-			  }
-		  }');
+		$this->validateMethodParams($params, 'rpc.sickbeard.set');
 		// Get the existing configuration object.
-		$xpath = "//services/sickbeard";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-			  $xpath);
-		}
-		// Update the existing configuration object.
-		$object = array_merge($object, array(
-			"enable" => array_boolval($params, "enable"),
-		));
-		if(FALSE === $xmlConfig->replace($xpath, $object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_SET_OBJECT_FAILED);
-		}
-		
-		// Notify configuration changes.
-		$dispatcher = &OMVNotifyDispatcher::getInstance();
-		$dispatcher->notify(OMV_NOTIFY_MODIFY,
-		  "org.openmediavault.services.sickbeard", $object);
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sickbeard");
+		$object->setAssoc($params);
+		// Set the configuration object.
+		$db->set($object);
 		// Return the configuration object.
-		return $object;
+		return $object->getAssoc();
 	}
 	
 }
-
-// Register the RPC service.
-$rpcServiceMgr = &OMVRpcServiceMgr::getInstance();
-$rpcServiceMgr->registerService(new OMVRpcServiceSickbeard());
 ?>

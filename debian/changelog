@@ -1,3 +1,9 @@
+openmediavault-sickbeard-essencia (0.9) unstable; urgency=medium
+
+  * Support OpenMediaVault 3
+
+ -- Gerik Bonaert <adaxi@packer-debian-8-amd64.droplet.local>  Sun, 16 Apr 2017 20:13:43 +0000
+
 openmediavault-sickbeard-essencia (0.1) unstable; urgency=low
 
   * Initial release
